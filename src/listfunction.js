@@ -1,8 +1,18 @@
+import { addTaskToProject } from "./displayUI";
+
 class Project {
     constructor(title) {
         this.title = title;
         this.project = [];
     }
+
+    addTask(task) {
+        this.project.push(task);
+    };
+
+    removeTask(index) {
+        this.project.splice(index, 1);
+    };
 }
 
 class ListItem {
@@ -21,10 +31,20 @@ function addNewItem() {
     const priority = prompt("Enter priority");
     
     const item = new ListItem(title, description, dueDate, priority);
+    
+    addTaskToProject(item);
 }
 
-function createNewProject () {
+function createNewProject() {
     const title = prompt("Please enter a title for the list");
 }
 
-export { addNewItem } 
+function createDefaultProject() {
+    const defaultProject = new Project("default");
+};
+
+function moveTask(projectName) {
+
+}
+
+export { addNewItem, createDefaultProject } 
