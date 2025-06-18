@@ -3,6 +3,7 @@ const { addNewItem, createNewProject } = require("./listfunction");
 const newTaskBtn = document.getElementsByClassName("newTaskBtn")[0];
 const newProjBtn = document.getElementsByClassName("newProjBtn")[0];
 const content = document.getElementsByClassName("content")[0];
+const sidebar = document.getElementsByClassName("sidebar")[0];
 
 function setTaskBtn () {
     newTaskBtn.addEventListener("click", function() {
@@ -18,7 +19,7 @@ function setProjBtn() {
 
 function addTaskToProject (item, project) {
     const openProjectDiv = document.getElementsByClassName(project)[0];
-    
+
     const task = document.createElement("div");
     openProjectDiv.appendChild(task);
     
@@ -49,6 +50,10 @@ function displayNewProject (title) {
     const projectHeader = document.createElement("h2");
     projectHeader.innerText = title;
     projectDiv.appendChild(projectHeader);
+
+    const projectLink = document.createElement("a");
+    projectLink.innerText = title;
+    sidebar.appendChild(projectLink);
 }
 
 function styleProject(element) {

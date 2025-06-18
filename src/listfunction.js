@@ -1,6 +1,5 @@
 import { addTaskToProject, displayNewProject, styleProject } from "./displayUI";
 
-
 var currentProject = Object;
 
 class Project {
@@ -39,6 +38,8 @@ function addNewItem() {
     addTaskToProject(item, project.title);
 
     project.addTask(item);
+
+    localStorage.setItem(project.title, JSON.stringify(project));
 }
 
 function createNewProject() {
@@ -61,6 +62,7 @@ function createNewProject() {
 function setCurrentProject(project) {
     currentProject = project;
 }
+
 
 // function moveTask(projectName)
 
