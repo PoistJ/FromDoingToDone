@@ -1,4 +1,7 @@
-import { addTaskToProject } from "./displayUI";
+import { addTaskToProject, displayNewProject, styleProject } from "./displayUI";
+
+
+var currentProject = Object;
 
 class Project {
     constructor(title) {
@@ -29,22 +32,36 @@ function addNewItem() {
     const description = prompt("Enter a description");
     const dueDate = prompt("Enter a due date");
     const priority = prompt("Enter priority");
+    const project = currentProject
     
     const item = new ListItem(title, description, dueDate, priority);
     
-    addTaskToProject(item);
+    addTaskToProject(item, project.title);
+
+    project.addTask(item);
 }
 
 function createNewProject() {
-    const title = prompt("Please enter a title for the list");
+    if (typeof defaultProject != "undefined") {
+        const defaultProject = new Project("default");
+        displayNewProject("default");
+        setCurrentProject(defaultProject);
+
+        localStorage.setItem("defaultProject", JSON.stringify(defaultProject));
+    } else {
+        const title = prompt("Please enter a title for the list");
+        const newProject = new Project(title);
+        displayNewProject(title);
+        setCurrentProject(newProject);
+
+        localStorage.setItem(title, JSON.stringify(newProject));
+    };
 }
 
-function createDefaultProject() {
-    const defaultProject = new Project("default");
-};
-
-function moveTask(projectName) {
-
+function setCurrentProject(project) {
+    currentProject = project;
 }
 
-export { addNewItem, createDefaultProject } 
+// function moveTask(projectName)
+
+export { addNewItem, createNewProject } 

@@ -1,7 +1,8 @@
-const { addNewItem } = require("./listfunction");
+const { addNewItem, createNewProject } = require("./listfunction");
 
 const newTaskBtn = document.getElementsByClassName("newTaskBtn")[0];
-const defaultProject = document.getElementsByClassName("defaultProject")[0];
+const newProjBtn = document.getElementsByClassName("newProjBtn")[0];
+const content = document.getElementsByClassName("content")[0];
 
 function setTaskBtn () {
     newTaskBtn.addEventListener("click", function() {
@@ -9,10 +10,18 @@ function setTaskBtn () {
     });
 };
 
-function addTaskToProject (item) {
-    const task = document.createElement("div");
-    defaultProject.appendChild(task);
+function setProjBtn() {
+    newProjBtn.addEventListener("click", function() {
+        createNewProject();
+    });
+};
 
+function addTaskToProject (item, project) {
+    const openProjectDiv = document.getElementsByClassName(project)[0];
+    
+    const task = document.createElement("div");
+    openProjectDiv.appendChild(task);
+    
     const taskTitle = document.createElement("div");
     taskTitle.innerText = item.title;
     taskTitle.style.fontWeight = "bold";
@@ -31,4 +40,19 @@ function addTaskToProject (item) {
     task.appendChild(taskPriority);
 }
 
-export { addTaskToProject, setTaskBtn }
+function displayNewProject (title) {
+    const projectDiv = document.createElement("div");
+    projectDiv.className = title;
+    content.appendChild(projectDiv);
+    styleProject(projectDiv);
+
+    const projectHeader = document.createElement("h2");
+    projectHeader.innerText = title;
+    projectDiv.appendChild(projectHeader);
+}
+
+function styleProject(element) {
+    element.style.width = "100%";
+}
+
+export { addTaskToProject, setTaskBtn, setProjBtn, displayNewProject, styleProject }

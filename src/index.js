@@ -1,5 +1,5 @@
-import { setTaskBtn } from "./displayUI.js";
-import { addNewItem, createDefaultProject } from "./listfunction.js";
+import { setProjBtn, setTaskBtn } from "./displayUI.js";
+import { addNewItem, createNewProject } from "./listfunction.js";
 import "./styles.css";
 
 if (process.env.NODE_ENV != 'production') {
@@ -7,4 +7,4 @@ if (process.env.NODE_ENV != 'production') {
 }
 
 setTaskBtn();
-createDefaultProject();
+setProjBtn();
