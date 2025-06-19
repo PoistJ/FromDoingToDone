@@ -1,4 +1,4 @@
-import { setProjBtn, setTaskBtn } from "./displayUI.js";
+import { setProjBtn, setTaskBtn, loadPage } from "./displayUI.js";
 import { addNewItem, createNewProject } from "./listfunction.js";
 import "./styles.css";
 
@@ -8,3 +8,4 @@ if (process.env.NODE_ENV != 'production') {
 
 setTaskBtn();
 setProjBtn();
+loadPage();

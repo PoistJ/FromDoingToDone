@@ -60,4 +60,10 @@ function styleProject(element) {
     element.style.width = "100%";
 }
 
-export { addTaskToProject, setTaskBtn, setProjBtn, displayNewProject, styleProject }
+function loadPage () {
+    for (let i = 0; i < localStorage.length; i++) { 
+        sidebar.append(localStorage.key(i));
+    };
+};
+
+export { addTaskToProject, setTaskBtn, setProjBtn, displayNewProject, styleProject, loadPage }
