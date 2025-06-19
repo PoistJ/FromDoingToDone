@@ -18,7 +18,7 @@ function setProjBtn() {
 };
 
 function addTaskToProject (item, project) {
-    const openProjectDiv = document.getElementsByClassName(project)[0];
+    const openProjectDiv = content.getElementsByClassName(project)[0];
 
     const task = document.createElement("div");
     openProjectDiv.appendChild(task);
@@ -60,9 +60,30 @@ function styleProject(element) {
     element.style.width = "100%";
 }
 
-function loadPage () {
+function loadPage() {
     for (let i = 0; i < localStorage.length; i++) { 
-        sidebar.append(localStorage.key(i));
+        const projLink = document.createElement("button");
+        projLink.innerText = localStorage.key(i);
+        projLink.className = localStorage.key(i);
+        sidebar.append(projLink);
+    };
+
+    const firstProj = JSON.parse(localStorage.getItem(localStorage.key(0)));
+    loadProject(firstProj);
+};
+
+function loadProject(project) {
+    const projectDiv = document.createElement("div");
+    projectDiv.className = project.title;
+    content.appendChild(projectDiv);
+    styleProject(projectDiv);
+
+    const projectHeader = document.createElement("h2");
+    projectHeader.innerText = project.title;
+    projectDiv.appendChild(projectHeader);
+
+    for (let task of project.project) {
+        addTaskToProject(task, project.title);
     };
 };
 

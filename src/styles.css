@@ -24,6 +24,8 @@ body {
     grid-row: 2 / 3;
     grid-column: 1 / 2;
     background-color: violet;
+    display: flex;
+    flex-direction: column;
 }
 
 .content {
@@ -36,3 +38,4 @@ body {
     border-style: solid;
     border-color: black;
 }
+

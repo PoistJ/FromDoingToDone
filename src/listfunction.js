@@ -1,6 +1,6 @@
 import { addTaskToProject, displayNewProject, styleProject } from "./displayUI";
 
-var currentProject = Object;
+var currentProject = JSON.parse(localStorage.getItem(localStorage.key(0)));
 
 class Project {
     constructor(title) {
@@ -17,6 +17,10 @@ class Project {
     };
 }
 
+function addTask(task, project) {
+    project.push(task);
+};
+
 class ListItem {
     constructor(title, description, dueDate, priority) {
         this.title = title;
@@ -31,13 +35,13 @@ function addNewItem() {
     const description = prompt("Enter a description");
     const dueDate = prompt("Enter a due date");
     const priority = prompt("Enter priority");
-    const project = currentProject
+    const project = currentProject;
     
     const item = new ListItem(title, description, dueDate, priority);
     
     addTaskToProject(item, project.title);
 
-    project.addTask(item);
+    addTask(item, project.project);
 
     localStorage.setItem(project.title, JSON.stringify(project));
 }
