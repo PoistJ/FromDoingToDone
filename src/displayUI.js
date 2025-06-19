@@ -17,6 +17,16 @@ function setProjBtn() {
     });
 };
 
+function setListBtn(listBtn) {
+    listBtn.addEventListener("click", function () {
+        while (content.firstChild) {
+            content.removeChild(content.lastChild);
+        };
+
+        loadProject(JSON.parse(localStorage.getItem(listBtn.className)));
+    });
+};
+
 function addTaskToProject (item, project) {
     const openProjectDiv = content.getElementsByClassName(project)[0];
 
@@ -51,7 +61,7 @@ function displayNewProject (title) {
     projectHeader.innerText = title;
     projectDiv.appendChild(projectHeader);
 
-    const projectLink = document.createElement("a");
+    const projectLink = document.createElement("button");
     projectLink.innerText = title;
     sidebar.appendChild(projectLink);
 }
@@ -65,6 +75,7 @@ function loadPage() {
         const projLink = document.createElement("button");
         projLink.innerText = localStorage.key(i);
         projLink.className = localStorage.key(i);
+        setListBtn(projLink);
         sidebar.append(projLink);
     };
 
@@ -86,5 +97,7 @@ function loadProject(project) {
         addTaskToProject(task, project.title);
     };
 };
+
+
 
 export { addTaskToProject, setTaskBtn, setProjBtn, displayNewProject, styleProject, loadPage }
