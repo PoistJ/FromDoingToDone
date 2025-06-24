@@ -57,9 +57,8 @@ function createNewProject() {
         const title = prompt("Please enter a title for the list");
         const newProject = new Project(title);
         displayNewProject(title);
-        setCurrentProject(newProject);
-
         localStorage.setItem(title, JSON.stringify(newProject));
+        setCurrentProject(newProject);
     };
 }
 
@@ -67,7 +66,10 @@ function setCurrentProject(project) {
     currentProject = project;
 }
 
+function deleteProject(project) {
+    localStorage.removeItem(project);
+}
 
 // function moveTask(projectName)
 
-export { addNewItem, createNewProject } 
+export { addNewItem, createNewProject, deleteProject } 

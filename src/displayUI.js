@@ -1,4 +1,4 @@
-const { addNewItem, createNewProject } = require("./listfunction");
+const { addNewItem, createNewProject, deleteProject } = require("./listfunction");
 
 const newTaskBtn = document.getElementsByClassName("newTaskBtn")[0];
 const newProjBtn = document.getElementsByClassName("newProjBtn")[0];
@@ -19,13 +19,20 @@ function setProjBtn() {
 
 function setListBtn(listBtn) {
     listBtn.addEventListener("click", function () {
-        while (content.firstChild) {
-            content.removeChild(content.lastChild);
-        };
+        removeDisplayedProject();
 
         loadProject(JSON.parse(localStorage.getItem(listBtn.className)));
     });
 };
+
+function setDeleteBtn(deleteBtn, projectName) {
+    deleteBtn.addEventListener("click", function () {
+        deleteProject(projectName);
+        deleteSideBarBtn(projectName);
+        removeDisplayedProject();
+        loadProject(JSON.parse(localStorage.getItem(localStorage.key(0))));
+    })
+}
 
 function addTaskToProject (item, project) {
     const openProjectDiv = content.getElementsByClassName(project)[0];
@@ -64,6 +71,8 @@ function displayNewProject (title) {
     const projectLink = document.createElement("button");
     projectLink.innerText = title;
     sidebar.appendChild(projectLink);
+
+    setListBtn(projectLink);
 }
 
 function styleProject(element) {
@@ -86,6 +95,7 @@ function loadPage() {
 function loadProject(project) {
     const projectDiv = document.createElement("div");
     projectDiv.className = project.title;
+    projectDiv.style.position = "relative";
     content.appendChild(projectDiv);
     styleProject(projectDiv);
 
@@ -93,11 +103,29 @@ function loadProject(project) {
     projectHeader.innerText = project.title;
     projectDiv.appendChild(projectHeader);
 
+    const deleteBtn = document.createElement("button");
+    deleteBtn.innerText = "Delete List";
+    deleteBtn.className = "deleteBtn";
+    deleteBtn.style.position = "absolute";
+    deleteBtn.style.top = "0";
+    deleteBtn.style.right = "0";
+    projectDiv.appendChild(deleteBtn);
+    setDeleteBtn(deleteBtn, project.title);
+
     for (let task of project.project) {
         addTaskToProject(task, project.title);
     };
 };
 
+function deleteSideBarBtn(projectName) {
+    const btn = document.getElementsByClassName(projectName)[0];
+    sidebar.removeChild(btn);
+};
 
+function removeDisplayedProject() {
+    while (content.firstChild) {
+            content.removeChild(content.lastChild);
+    };
+};
 
 export { addTaskToProject, setTaskBtn, setProjBtn, displayNewProject, styleProject, loadPage }
