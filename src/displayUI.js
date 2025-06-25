@@ -147,7 +147,7 @@ function loadProject(project) {
 
 function createDeleteBtn(div, title) {
     const deleteBtn = document.createElement("button");
-    deleteBtn.innerText = "Delete List";
+    deleteBtn.innerText = "X";
     deleteBtn.className = "deleteBtn";
     deleteBtn.style.position = "absolute";
     deleteBtn.style.top = "0";
