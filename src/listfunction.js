@@ -1,4 +1,4 @@
-import { addTaskToProject, displayNewProject, styleProject } from "./displayUI";
+import { addTaskToProject, displayNewProject, removeDisplayedProject } from "./displayUI";
 
 var currentProject = JSON.parse(localStorage.getItem(localStorage.key(0)));
 
@@ -15,20 +15,25 @@ class Project {
     removeTask(index) {
         this.project.splice(index, 1);
     };
-}
+};
 
 function addTask(task, project) {
     project.push(task);
 };
 
+function removeTask(index, project) {
+    project.splice(index, 1);
+};
+
 class ListItem {
-    constructor(title, description, dueDate, priority) {
+    constructor(title, description, dueDate, priority, completion, index) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
         this.priority = priority;
-    }
-}
+        this.completion = completion;
+    };
+};
 
 function addNewItem() {
     const title = prompt("Enter a title");
@@ -36,40 +41,49 @@ function addNewItem() {
     const dueDate = prompt("Enter a due date");
     const priority = prompt("Enter priority");
     const project = currentProject;
+    const completion = false;
     
-    const item = new ListItem(title, description, dueDate, priority);
+    const item = new ListItem(title, description, dueDate, priority, completion);
     
     addTaskToProject(item, project.title);
 
     addTask(item, project.project);
 
     localStorage.setItem(project.title, JSON.stringify(project));
-}
+};
 
 function createNewProject() {
-    if (typeof defaultProject != "undefined") {
-        const defaultProject = new Project("default");
-        displayNewProject("default");
-        setCurrentProject(defaultProject);
+    const title = prompt("Please enter a title for the list");
+    const newProject = new Project(title);
+    removeDisplayedProject();
+    displayNewProject(title);
+    localStorage.setItem(title, JSON.stringify(newProject));
+    setCurrentProject(newProject);
+};
 
-        localStorage.setItem("defaultProject", JSON.stringify(defaultProject));
-    } else {
-        const title = prompt("Please enter a title for the list");
-        const newProject = new Project(title);
-        displayNewProject(title);
-        localStorage.setItem(title, JSON.stringify(newProject));
-        setCurrentProject(newProject);
-    };
-}
+function updateCompletion(project, item, status) {
+    item.completion = status;
+
+    updateStorage(project.title, project);
+};
+
+function updateStorage(title, project) {
+    localStorage.setItem(title, JSON.stringify(project));
+};
 
 function setCurrentProject(project) {
     currentProject = project;
-}
+};
 
 function deleteProject(project) {
     localStorage.removeItem(project);
-}
+};
 
+function deleteTask(task) {
+    const index = currentProject.project.map(o => o.title).indexOf(task);
+    removeTask(index, currentProject.project);
+    updateStorage(currentProject.title, currentProject);
+};
 // function moveTask(projectName)
 
-export { addNewItem, createNewProject, deleteProject } 
+export { addNewItem, createNewProject, deleteProject, updateCompletion, setCurrentProject, deleteTask } 

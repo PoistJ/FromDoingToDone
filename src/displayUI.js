@@ -1,4 +1,4 @@
-const { addNewItem, createNewProject, deleteProject } = require("./listfunction");
+const { addNewItem, createNewProject, deleteProject, deleteTask, updateCompletion, setCurrentProject } = require("./listfunction");
 
 const newTaskBtn = document.getElementsByClassName("newTaskBtn")[0];
 const newProjBtn = document.getElementsByClassName("newProjBtn")[0];
@@ -20,8 +20,9 @@ function setProjBtn() {
 function setListBtn(listBtn) {
     listBtn.addEventListener("click", function () {
         removeDisplayedProject();
-
-        loadProject(JSON.parse(localStorage.getItem(listBtn.className)));
+        const thisProject = JSON.parse(localStorage.getItem(listBtn.className));
+        loadProject(thisProject);
+        setCurrentProject(thisProject);
     });
 };
 
@@ -31,36 +32,68 @@ function setDeleteBtn(deleteBtn, projectName) {
         deleteSideBarBtn(projectName);
         removeDisplayedProject();
         loadProject(JSON.parse(localStorage.getItem(localStorage.key(0))));
-    })
-}
+    });
+};
+
+function setDeleteTaskBtn(deleteTaskBtn, taskName) {
+    deleteTaskBtn.addEventListener("click", function () {
+        deleteTask(taskName);
+        removeSelectedTask(deleteTaskBtn.parentElement.parentElement, deleteTaskBtn.parentElement);
+    });
+};
 
 function addTaskToProject (item, project) {
-    const openProjectDiv = content.getElementsByClassName(project)[0];
+    const openProjectDiv = content.firstElementChild;
 
     const task = document.createElement("div");
+    task.className = item.title;
+    task.style.display = "flex";
+    task.style.margin = "20px";
     openProjectDiv.appendChild(task);
     
+    const taskCheck = document.createElement("input");
+    taskCheck.type = "checkbox";
+    taskCheck.value = item.title;
+    taskCheck.id = "id";
+    taskCheck.style.alignSelf = "start";
+    task.appendChild(taskCheck);
+
+    if (item.completion == true) {
+        taskCheck.checked = true;
+    };
+
+    taskCheck.addEventListener('change', (event) => {
+        if (event.currentTarget.checked) {
+            updateCompletion(project, item, true);
+        } else {
+            updateCompletion(project, item, false);
+        };
+    });
+
+    const taskTextDiv = document.createElement("div");
+    taskTextDiv.style.paddingLeft = "10px";
+    task.appendChild(taskTextDiv);
+
     const taskTitle = document.createElement("div");
     taskTitle.innerText = item.title;
     taskTitle.style.fontWeight = "bold";
-    task.appendChild(taskTitle);
+    taskTextDiv.appendChild(taskTitle);
 
     const taskDescription = document.createElement("div");
     taskDescription.innerText = item.description;
-    task.appendChild(taskDescription);
+    taskTextDiv.appendChild(taskDescription);
 
     const taskDue = document.createElement("div");
-    taskDue.innerText = item.dueDate;
-    task.appendChild(taskDue);
+    taskDue.innerText = `Due: ${item.dueDate}`;
+    taskTextDiv.appendChild(taskDue);
 
-    const taskPriority = document.createElement("div");
-    taskPriority.innerText = `Priority: ${item.priority}`;
-    task.appendChild(taskPriority);
+    createDeleteTaskBtn(task, item.title);
 }
 
 function displayNewProject (title) {
     const projectDiv = document.createElement("div");
     projectDiv.className = title;
+    projectDiv.style.position = "relative";
     content.appendChild(projectDiv);
     styleProject(projectDiv);
 
@@ -70,8 +103,10 @@ function displayNewProject (title) {
 
     const projectLink = document.createElement("button");
     projectLink.innerText = title;
+    projectLink.className = title;
     sidebar.appendChild(projectLink);
 
+    createDeleteBtn(projectDiv, title);
     setListBtn(projectLink);
 }
 
@@ -103,18 +138,30 @@ function loadProject(project) {
     projectHeader.innerText = project.title;
     projectDiv.appendChild(projectHeader);
 
+    createDeleteBtn(projectDiv, project.title)
+
+    for (let task of project.project) {
+        addTaskToProject(task, project);
+    };
+};
+
+function createDeleteBtn(div, title) {
     const deleteBtn = document.createElement("button");
     deleteBtn.innerText = "Delete List";
     deleteBtn.className = "deleteBtn";
     deleteBtn.style.position = "absolute";
     deleteBtn.style.top = "0";
     deleteBtn.style.right = "0";
-    projectDiv.appendChild(deleteBtn);
-    setDeleteBtn(deleteBtn, project.title);
+    div.appendChild(deleteBtn);
+    setDeleteBtn(deleteBtn, title);
+};
 
-    for (let task of project.project) {
-        addTaskToProject(task, project.title);
-    };
+function createDeleteTaskBtn(div, title) {
+    const deleteTaskBtn = document.createElement("button");
+    deleteTaskBtn.innerText = "X";
+    deleteTaskBtn.className = "deleteTaskBtn";
+    div.appendChild(deleteTaskBtn);
+    setDeleteTaskBtn(deleteTaskBtn, title);
 };
 
 function deleteSideBarBtn(projectName) {
@@ -128,4 +175,8 @@ function removeDisplayedProject() {
     };
 };
 
-export { addTaskToProject, setTaskBtn, setProjBtn, displayNewProject, styleProject, loadPage }
+function removeSelectedTask(parentDiv, taskDiv) {
+    parentDiv.removeChild(taskDiv);
+};
+
+export { addTaskToProject, setTaskBtn, setProjBtn, displayNewProject, styleProject, loadPage, removeDisplayedProject }
