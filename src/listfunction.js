@@ -1,4 +1,4 @@
-import { addTaskToProject, displayNewProject, removeDisplayedProject } from "./displayUI";
+import { addTaskToProject, closeModal, displayNewProject, removeDisplayedProject } from "./displayUI";
 
 var currentProject = JSON.parse(localStorage.getItem(localStorage.key(0)));
 
@@ -26,7 +26,7 @@ function removeTask(index, project) {
 };
 
 class ListItem {
-    constructor(title, description, dueDate, priority, completion, index) {
+    constructor(title, description, dueDate, priority, completion) {
         this.title = title;
         this.description = description;
         this.dueDate = dueDate;
@@ -36,13 +36,13 @@ class ListItem {
 };
 
 function addNewItem() {
-    const title = prompt("Enter a title");
-    const description = prompt("Enter a description");
-    const dueDate = prompt("Enter a due date");
-    const priority = prompt("Enter priority");
+    const title = document.getElementById("taskTitle").value;
+    const description = document.getElementById("taskDescription").value;
+    const dueDate = document.getElementById("taskDueDate").value;
+    const priority = document.getElementById("taskPriority").value;
     const project = currentProject;
+
     const completion = false;
-    
     const item = new ListItem(title, description, dueDate, priority, completion);
     
     addTaskToProject(item, project.title);
@@ -50,6 +50,8 @@ function addNewItem() {
     addTask(item, project.project);
 
     localStorage.setItem(project.title, JSON.stringify(project));
+
+    closeModal();
 };
 
 function createNewProject() {

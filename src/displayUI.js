@@ -4,12 +4,16 @@ const newTaskBtn = document.getElementsByClassName("newTaskBtn")[0];
 const newProjBtn = document.getElementsByClassName("newProjBtn")[0];
 const content = document.getElementsByClassName("content")[0];
 const sidebar = document.getElementsByClassName("sidebar")[0];
+const taskModal = document.getElementsByClassName("taskModal")[0];
+const closeTaskSpan = document.getElementsByClassName("closeTaskModal")[0];
+const submitBtn = document.getElementsByClassName("submitTaskBtn")[0];
 
-function setTaskBtn () {
+
+/*function setTaskBtn () {
     newTaskBtn.addEventListener("click", function() {
         addNewItem();
     });
-};
+};*/
 
 function setProjBtn() {
     newProjBtn.addEventListener("click", function() {
@@ -40,6 +44,30 @@ function setDeleteTaskBtn(deleteTaskBtn, taskName) {
         deleteTask(taskName);
         removeSelectedTask(deleteTaskBtn.parentElement.parentElement, deleteTaskBtn.parentElement);
     });
+};
+
+function setSubmitBtn() {
+    submitBtn.addEventListener("click", function () {
+        addNewItem();
+    });
+};
+
+newTaskBtn.onclick = function() {
+    taskModal.style.display = "block";
+};
+
+closeTaskSpan.onclick = function() {
+    closeModal
+};
+
+function closeModal() {
+    taskModal.style.display = "none";
+}
+
+window.onclick = function(event) {
+    if (event.target == taskModal) {
+        taskModal.style.display = "none";
+    };
 };
 
 function addTaskToProject (item, project) {
@@ -179,4 +207,11 @@ function removeSelectedTask(parentDiv, taskDiv) {
     parentDiv.removeChild(taskDiv);
 };
 
-export { addTaskToProject, setTaskBtn, setProjBtn, displayNewProject, styleProject, loadPage, removeDisplayedProject }
+export { addTaskToProject, 
+    setProjBtn, 
+    displayNewProject, 
+    styleProject, 
+    loadPage, 
+    removeDisplayedProject, 
+    setSubmitBtn, 
+    closeModal }

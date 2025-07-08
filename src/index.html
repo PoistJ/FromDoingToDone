@@ -9,10 +9,45 @@
     <div id="main">
         <div class="header">
             <svg class="logoIcon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 -960 960 960"><path fill="white" d="M222-200 80-342l56-56 85 85 170-170 56 57zm0-320L80-662l56-56 85 85 170-170 56 57zm298 240v-80h360v80zm0-320v-80h360v80z"/></svg>
-            From <em>Doing</em> To Done!
+            Doing To Done!
         </div>
         <div class="sidebar">
             <button class="newTaskBtn">Add New Task</button>
+            <div class="taskModal">
+                <div class="taskModal-content">
+                    <span class="closeTaskModal">&times;</span>
+                        <p>
+                            <label for="title">Item:</label>
+                            <input type="text" id="taskTitle" name="task_title" />
+                        </p>
+
+                        <p>
+                            <label for="description">Description:</label>
+                            <input type="text" id="taskDescription" name="task_description" />
+                        </p>
+
+                        <p>
+                            <label for="dueDate">Due:</label>
+                            <input type="date" id="taskDueDate" name="task_due" />
+                        </p>
+
+                        <p>
+                            <label for="priority">Priority:</label>
+                            <select id="taskPriority" name="task_priority">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                            </select>
+                        </p>
+
+                        <p>
+                            <button class="submitTaskBtn">Submit</button>
+                            <button type="reset">Reset</button>
+                        </p>
+                </div>
+            </div>
             <button class="newProjBtn">Create New List</button>
         </div>
         <div class="content">
